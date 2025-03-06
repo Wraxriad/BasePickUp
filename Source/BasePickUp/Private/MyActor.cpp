@@ -46,6 +46,3 @@ void AMyActor::OnBeginOverLapComponentEvent(UPrimitiveComponent* OverlappedCompo
 	}
 	Destroy();
 }
-
-
-
