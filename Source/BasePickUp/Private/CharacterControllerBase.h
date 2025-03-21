@@ -33,6 +33,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TWA_Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> RunAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TWA_Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> CrouchAction;
+
 	TObjectPtr<ACharacterBase> CurrentCharacter;
 
 public:
@@ -54,4 +57,8 @@ protected:
 	void RunStart();
 
 	void RunStop();
+
+	void CrouchStart();
+
+	void CrouchStop();
 };

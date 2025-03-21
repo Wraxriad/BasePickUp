@@ -12,6 +12,7 @@ void ACharacterControllerBase::SetupInputComponent()
 	TObjectPtr<UEnhancedInputComponent> EnhancedInputComponent
 		= Cast<UEnhancedInputComponent>(this->InputComponent);
 
+
 	if (EnhancedInputComponent)
 	{
 		// Move
@@ -24,6 +25,9 @@ void ACharacterControllerBase::SetupInputComponent()
 		// Run
 		EnhancedInputComponent->BindAction(RunAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::RunStart);
 		EnhancedInputComponent->BindAction(RunAction.Get(), ETriggerEvent::Completed, this, &ACharacterControllerBase::RunStop);
+		//Crouch
+		EnhancedInputComponent->BindAction(CrouchAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::CrouchStart);
+		EnhancedInputComponent->BindAction(CrouchAction.Get(), ETriggerEvent::Completed, this, &ACharacterControllerBase::CrouchStop);
 	}
 }
 
@@ -54,6 +58,7 @@ void ACharacterControllerBase::Move(const FInputActionValue& Value)
 
 	this->CurrentCharacter->AddMovementInput(FowarDirection, MovementVector.Y);
 	this->CurrentCharacter->AddMovementInput(RightDirection, MovementVector.X);
+
 }
 
 void ACharacterControllerBase::Look(const FInputActionValue& value)
@@ -82,4 +87,15 @@ void ACharacterControllerBase::RunStart()
 void ACharacterControllerBase::RunStop()
 {
 	this->CurrentCharacter->GetCharacterMovement()->MaxWalkSpeed /= 2;
+}
+
+void ACharacterControllerBase::CrouchStart()
+{
+	this->CurrentCharacter->Crouch();
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Blue, TEXT("Crouch"));
+}
+
+void ACharacterControllerBase::CrouchStop()
+{
+	this->CurrentCharacter->UnCrouch();
 }

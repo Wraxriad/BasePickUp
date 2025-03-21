@@ -20,4 +20,9 @@ AMainCharacter::AMainCharacter()
 	this->CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TWA CameraComponent"));
 	this->CameraComponent->SetupAttachment(this->CameraArmComponent.Get(), USpringArmComponent::SocketName);
 	this->CameraComponent->bUsePawnControlRotation = false;
+
+	//Crouch
+	MovementComponent->MaxWalkSpeedCrouched = 200.f;
+	MovementComponent->GetNavAgentPropertiesRef().bCanCrouch = true;
+
 }
