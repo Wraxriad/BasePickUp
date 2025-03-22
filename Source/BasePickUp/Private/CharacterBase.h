@@ -2,7 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Camera/CameraComponent.h"
 #include "CharacterBase.generated.h"
+
 
 class USpringArmComponent;
 class UCameraComponent;
@@ -15,14 +17,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = TWA_Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> CameraArmComponent;
 
+
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = TWA_Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> ThirdPersonCamera;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = TWA_Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> FirstPersonCamera;
 
-
-public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 

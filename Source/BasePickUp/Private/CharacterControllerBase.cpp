@@ -4,6 +4,7 @@
 #include "InputMappingContext.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "CharacterBase.h"
+#include "Components/ActorComponent.h"
 
 void ACharacterControllerBase::SetupInputComponent()
 {
@@ -28,6 +29,8 @@ void ACharacterControllerBase::SetupInputComponent()
 		//Crouch
 		EnhancedInputComponent->BindAction(CrouchAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::CrouchStart);
 		EnhancedInputComponent->BindAction(CrouchAction.Get(), ETriggerEvent::Completed, this, &ACharacterControllerBase::CrouchStop);
+
+		EnhancedInputComponent->BindAction(PerspectiveAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::Perspective);
 	}
 }
 
@@ -63,6 +66,9 @@ void ACharacterControllerBase::Move(const FInputActionValue& Value)
 
 void ACharacterControllerBase::Look(const FInputActionValue& value)
 {
+
+
+
 	const FVector2D LookAxisVector = value.Get<FVector2d>();
 
 	this->CurrentCharacter->AddControllerYawInput(LookAxisVector.X);
@@ -98,4 +104,22 @@ void ACharacterControllerBase::CrouchStart()
 void ACharacterControllerBase::CrouchStop()
 {
 	this->CurrentCharacter->UnCrouch();
+}
+
+void ACharacterControllerBase::Perspective()
+{
+	if (FlipFlop)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("FirstP"));
+		this->CurrentCharacter->ThirdPersonCamera->Deactivate();
+		this->CurrentCharacter->FirstPersonCamera->Activate();
+		FlipFlop = false;
+	}
+	else 
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("ThirdP"));
+		this->CurrentCharacter->FirstPersonCamera->Deactivate();
+		this->CurrentCharacter->ThirdPersonCamera->Activate();
+		FlipFlop = true;
+	}
 }

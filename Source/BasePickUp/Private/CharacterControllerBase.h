@@ -18,6 +18,8 @@ class ACharacterControllerBase : public APlayerController
 	GENERATED_BODY()
 public:
 
+	bool FlipFlop = true;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TWA_Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputMappingContext> CurrentMappingContext;
 
@@ -36,6 +38,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TWA_Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> CrouchAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TWA_Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> PerspectiveAction;
 
 
 	TObjectPtr<ACharacterBase> CurrentCharacter;
@@ -63,4 +67,6 @@ protected:
 	void CrouchStart();
 
 	void CrouchStop();
+
+	void Perspective();
 };
