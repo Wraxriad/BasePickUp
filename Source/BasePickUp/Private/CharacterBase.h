@@ -16,7 +16,10 @@ protected:
 	TObjectPtr<USpringArmComponent> CameraArmComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = TWA_Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCameraComponent> CameraComponent;
+	TObjectPtr<UCameraComponent> ThirdPersonCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = TWA_Camera, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCameraComponent> FirstPersonCamera;
 
 
 public:

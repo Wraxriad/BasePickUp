@@ -17,9 +17,14 @@ AMainCharacter::AMainCharacter()
 	this->CameraArmComponent->TargetArmLength = 400.0f;
 	this->CameraArmComponent->bUsePawnControlRotation = true;
 
-	this->CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TWA CameraComponent"));
-	this->CameraComponent->SetupAttachment(this->CameraArmComponent.Get(), USpringArmComponent::SocketName);
-	this->CameraComponent->bUsePawnControlRotation = false;
+	this->ThirdPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ThirdPersonCamera"));
+	this->ThirdPersonCamera->SetupAttachment(this->CameraArmComponent.Get(), USpringArmComponent::SocketName);
+	this->ThirdPersonCamera->bUsePawnControlRotation = false;
+
+	this->FirstPersonCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	this->FirstPersonCamera->SetupAttachment(this->GetMesh(), TEXT("HeadSocket"));
+	this->FirstPersonCamera->bUsePawnControlRotation = true;
+	this->FirstPersonCamera->bAutoActivate = false;
 
 	//Crouch
 	MovementComponent->MaxWalkSpeedCrouched = 200.f;

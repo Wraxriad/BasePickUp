@@ -36,6 +36,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TWA_Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> CrouchAction;
 
+
+
 	TObjectPtr<ACharacterBase> CurrentCharacter;
 
 public:
