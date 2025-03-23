@@ -41,6 +41,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TWA_Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> PerspectiveAction;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = TWA_Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> DashAction;
+
 
 	TObjectPtr<ACharacterBase> CurrentCharacter;
 
@@ -69,4 +72,7 @@ protected:
 	void CrouchStop();
 
 	void Perspective();
+
+	void Dash();
+	float DashDistance = 6000;
 };

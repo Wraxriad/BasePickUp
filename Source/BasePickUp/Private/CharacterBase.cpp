@@ -15,6 +15,8 @@ ACharacterBase::ACharacterBase() :
 void ACharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	FirstPersonCamera->Deactivate();
+	ThirdPersonCamera->Activate();
 	
 }
 

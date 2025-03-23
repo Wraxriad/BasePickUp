@@ -29,5 +29,4 @@ AMainCharacter::AMainCharacter()
 	//Crouch
 	MovementComponent->MaxWalkSpeedCrouched = 200.f;
 	MovementComponent->GetNavAgentPropertiesRef().bCanCrouch = true;
-
 }

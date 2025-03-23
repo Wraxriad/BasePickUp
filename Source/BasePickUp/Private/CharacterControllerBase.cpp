@@ -1,3 +1,4 @@
+#include "GameFramework/Character.h"
 #include "CharacterControllerBase.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -5,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "CharacterBase.h"
 #include "Components/ActorComponent.h"
+#include "Camera/CameraComponent.h"
 
 void ACharacterControllerBase::SetupInputComponent()
 {
@@ -12,7 +14,6 @@ void ACharacterControllerBase::SetupInputComponent()
 
 	TObjectPtr<UEnhancedInputComponent> EnhancedInputComponent
 		= Cast<UEnhancedInputComponent>(this->InputComponent);
-
 
 	if (EnhancedInputComponent)
 	{
@@ -29,8 +30,10 @@ void ACharacterControllerBase::SetupInputComponent()
 		//Crouch
 		EnhancedInputComponent->BindAction(CrouchAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::CrouchStart);
 		EnhancedInputComponent->BindAction(CrouchAction.Get(), ETriggerEvent::Completed, this, &ACharacterControllerBase::CrouchStop);
-
+		//1st to 3rd
 		EnhancedInputComponent->BindAction(PerspectiveAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::Perspective);
+		//Dashing
+		EnhancedInputComponent->BindAction(DashAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::Dash);
 	}
 }
 
@@ -51,25 +54,21 @@ void ACharacterControllerBase::OnPossess(APawn* InPawn)
 
 void ACharacterControllerBase::Move(const FInputActionValue& Value)
 {
-	const FVector2D MovementVector = Value.Get<FVector2d>();
+	const FVector2D MovementVector = Value.Get<FVector2D>();
 
 	const FRotator Rotation = this->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-	const FVector FowarDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	this->CurrentCharacter->AddMovementInput(FowarDirection, MovementVector.Y);
+	this->CurrentCharacter->AddMovementInput(ForwardDirection, MovementVector.Y);
 	this->CurrentCharacter->AddMovementInput(RightDirection, MovementVector.X);
-
 }
 
-void ACharacterControllerBase::Look(const FInputActionValue& value)
+void ACharacterControllerBase::Look(const FInputActionValue& Value)
 {
-
-
-
-	const FVector2D LookAxisVector = value.Get<FVector2d>();
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	this->CurrentCharacter->AddControllerYawInput(LookAxisVector.X);
 	this->CurrentCharacter->AddControllerPitchInput(LookAxisVector.Y);
@@ -122,4 +121,10 @@ void ACharacterControllerBase::Perspective()
 		this->CurrentCharacter->ThirdPersonCamera->Activate();
 		FlipFlop = true;
 	}
+}
+
+void ACharacterControllerBase::Dash()
+{
+	const FVector ForwardDirection = this->CurrentCharacter->GetActorRotation().Vector();
+	this->CurrentCharacter->LaunchCharacter(ForwardDirection * DashDistance, true, true);
 }
