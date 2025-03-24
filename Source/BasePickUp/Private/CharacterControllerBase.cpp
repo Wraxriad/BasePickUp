@@ -1,5 +1,5 @@
-#include "GameFramework/Character.h"
 #include "CharacterControllerBase.h"
+#include "GameFramework/Character.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
@@ -34,6 +34,8 @@ void ACharacterControllerBase::SetupInputComponent()
 		EnhancedInputComponent->BindAction(PerspectiveAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::Perspective);
 		//Dashing
 		EnhancedInputComponent->BindAction(DashAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::Dash);
+		//Interact
+		EnhancedInputComponent->BindAction(InteractAction.Get(), ETriggerEvent::Started, this, &ACharacterControllerBase::Interact);
 	}
 }
 
@@ -76,6 +78,7 @@ void ACharacterControllerBase::Look(const FInputActionValue& Value)
 
 void ACharacterControllerBase::JumpStart()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Black, TEXT("Jump"));
 	this->CurrentCharacter->Jump();
 }
 
@@ -87,6 +90,7 @@ void ACharacterControllerBase::JumpStop()
 void ACharacterControllerBase::RunStart()
 {
 	this->CurrentCharacter->GetCharacterMovement()->MaxWalkSpeed *= 2;
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Run"));
 }
 
 void ACharacterControllerBase::RunStop()
@@ -126,5 +130,21 @@ void ACharacterControllerBase::Perspective()
 void ACharacterControllerBase::Dash()
 {
 	const FVector ForwardDirection = this->CurrentCharacter->GetActorRotation().Vector();
-	this->CurrentCharacter->LaunchCharacter(ForwardDirection * DashDistance, true, true);
+	if (!CurrentCharacter->GetMovementComponent()->IsFalling()) {
+		GEngine->AddOnScreenDebugMessage(
+			-1, 
+			15.0f, FColor::Green, 
+			TEXT("Ground Dash"));
+
+		this->CurrentCharacter->LaunchCharacter(
+		ForwardDirection * DashDistance,
+		true,
+		true
+		);
+	}
+}
+
+void ACharacterControllerBase::Interact()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, TEXT("Interact"));
 }

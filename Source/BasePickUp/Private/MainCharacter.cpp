@@ -6,7 +6,7 @@
 AMainCharacter::AMainCharacter()
 {
 	this->bUseControllerRotationPitch = false;
-	this->bUseControllerRotationYaw = false;
+	this->bUseControllerRotationYaw = true;
 	this->bUseControllerRotationRoll = false;
 
 	TObjectPtr < UCharacterMovementComponent> MovementComponent = this->GetCharacterMovement();
